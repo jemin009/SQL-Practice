@@ -143,5 +143,47 @@ having sum(il.unit_price * il.quantity) > 10;
 -- Q7 -------------------------------------------------------------------------------------------------------------------
 
 /*
+— Customer Ranking 
+
+Rank customers by their total spending from highest to lowest.
+Display customer name, country, total spending, and rank. 
+
+Tables: customer, invoice 
+*/
+
+select 
+	c.first_name || ' ' || c.last_name as customer_name,
+	c.country,
+	sum(i.total) as total_spending,
+	rank() over(order by sum(i.total) desc) rank_spending
+from customer c
+
+join invoice i
+on c.customer_id = i.customer_id
+
+group by 1,2;
+
+-- Q8 -------------------------------------------------------------------------------------------------------------------
+
+/*
+— Monthly Revenue 
+
+Calculate revenue for each year and month. Display year, month, and total revenue, sorted chronologically. 
+
+Table: invoice
+*/
+
+select 
+	extract (month from invoice_date) as month_,
+	extract (year from invoice_date) as year_,
+	sum(total) as total_revenue
+from invoice
+
+group by 1,2
+order by 1,2 desc;
+
+-- Q9 -------------------------------------------------------------------------------------------------------------------
+
+/*
 
 */
